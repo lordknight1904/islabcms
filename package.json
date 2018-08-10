@@ -1,0 +1,50 @@
+{
+  "name": "cms",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.0.0-rc.1",
+    "@material-ui/icons": "^1.0.0-beta.43",
+    "classnames": "^2.2.5",
+    "history": "^4.7.2",
+    "isomorphic-fetch": "^2.2.1",
+    "material-ui": "^1.0.0-beta.43",
+    "material-ui-chip-input": "^1.0.0-beta.6",
+    "moment": "^2.22.1",
+    "npm": "^6.0.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.3.2",
+    "react-file-base64": "^1.0.3",
+    "react-helmet": "^5.2.0",
+    "react-pdf": "^3.0.5",
+    "react-popper": "^0.10.4",
+    "react-redux": "^5.0.5",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "react-router-redux": "next",
+    "react-scripts": "1.1.4",
+    "redux": "^3.7.1",
+    "redux-form": "7.2.3",
+    "redux-thunk": "2.2.0",
+    "serve": "^6.5.6"
+  },
+  "scripts": {
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "production": "npm run build && serve -s build"
+  },
+  "devDependencies": {
+    "ajv": "^6.4.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-ava": "^4.5.1",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "redux-logger": "^3.0.6"
+  }
+}
