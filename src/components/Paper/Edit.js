@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles, Grid } from 'material-ui';
-import { withRouter } from 'react-router'
+import {withStyles, Grid} from 'material-ui';
+import {withRouter} from 'react-router'
 import appStyle from '../../assets/jss/components/appStyle';
 import RegularCard from "../../components/Cards/RegularCard";
 import ItemGrid from "../../components/Grid/ItemGrid";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import Button from "../../components/CustomButtons/Button";
-import { setEdit, editPaper, fetchPaper, addPaper, paperLoading } from '../../reducers/paper';
-import { bindActionCreators } from "redux";
+import {setEdit, editPaper, fetchPaper, addPaper, paperLoading} from '../../reducers/paper';
+import {bindActionCreators} from "redux";
 import FileBase64 from 'react-file-base64';
-import { LinearProgress } from "material-ui";
+import {LinearProgress} from "material-ui";
+import {TextField, MenuItem, FormControl} from "@material-ui/core";
 import ChipInput from 'material-ui-chip-input';
-import { Document, Page } from 'react-pdf';
+import {Document, Page} from 'react-pdf';
 
 class Edit extends Component {
   state = {
@@ -25,7 +26,9 @@ class Edit extends Component {
     pdfBase64: '',
     fileBase64: '',
     pdfPath: '',
+    detail: '',
     filePath: '',
+    published: '0',
     _id: '',
 
     numPages: null,
@@ -39,6 +42,8 @@ class Edit extends Component {
         type: nextProps.paper.edit.type,
         authors: nextProps.paper.edit.authors,
         submittedTo: nextProps.paper.edit.submittedTo,
+        published: nextProps.paper.edit.published,
+        detail: nextProps.paper.edit.detail,
         pdfPath: nextProps.paper.edit.pdfPath,
         filePath: nextProps.paper.edit.filePath,
         _id: nextProps.paper._id,
@@ -48,10 +53,10 @@ class Edit extends Component {
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({[event.target.name]: event.target.value});
   };
   onSubmit = () => {
-    const { name, type, authors, submittedTo, pdfBase64, fileBase64 } = this.state;
+    const {name, type, authors, submittedTo, pdfBase64, fileBase64, published, detail} = this.state;
     this.setState({
       isSubmitting: true,
     });
@@ -60,6 +65,8 @@ class Edit extends Component {
       name,
       type,
       authors,
+      published,
+      detail,
       submittedTo,
       pdfBase64,
       fileBase64,
@@ -71,9 +78,11 @@ class Edit extends Component {
           isSubmitting: false,
           name: '',
           type: '',
+          published: '',
           authors: '',
           submittedTo: '',
           pdfBase64: '',
+          detail: '',
           fileBase64: '',
           pdfPath: '',
           filePath: '',
@@ -90,29 +99,31 @@ class Edit extends Component {
 
   getFile = (file) => {
     if (file.type.search('pdf') > -1) {
-      this.setState({ pdfBase64: file.base64 });
+      this.setState({pdfBase64: file.base64});
     }
   };
   getFileZip = (file) => {
     if (file.type.search('zip') > -1) {
-      this.setState({ fileBase64: file.base64 });
+      this.setState({fileBase64: file.base64});
     }
   };
 
   onAdd = (chip) => {
-    this.setState({ authors: [...this.state.authors, chip] });
+    this.setState({authors: [...this.state.authors, chip]});
   };
   onDelete = (chips, index) => {
-    const { authors } = this.state;
-    this.setState({ authors: [...authors.slice(0, index), ...authors.slice(index + 1)]})
+    const {authors} = this.state;
+    this.setState({authors: [...authors.slice(0, index), ...authors.slice(index + 1)]})
   };
+
   componentWillUnmount() {
     this.props.setEdit({});
     this.props.fetchPaper();
   }
+
   render() {
-    const { paper, classes } = this.props;
-    const { name, type, authors, submittedTo, pdfBase64, pdfPath, pageNumber, numPages } = this.state;
+    const {paper, classes} = this.props;
+    const {name, type, authors, submittedTo, pdfBase64, pdfPath, pageNumber, numPages, published, detail} = this.state;
     return (
       <div>
         {
@@ -155,14 +166,54 @@ class Edit extends Component {
                     </Grid>
                     <Grid container>
                       <ItemGrid xs={12} sm={12} md>
-                        <ChipInput
-                          id="authors"
-                          name="authors"
-                          label="Authors"
-                          value={authors}
-                          onAdd={(chip) => this.onAdd(chip)}
-                          onDelete={(chips, index) => this.onDelete(chips, index)}
+                        <FormControl fullWidth style={{ marginTop: '27px' }}>
+                          <TextField
+                            select
+                            label="Published status"
+                            id="published"
+                            name="published"
+                            value={published}
+                            onChange={this.handleChange}
+                          >
+                            <MenuItem value='0'>
+                              Submitted
+                            </MenuItem>
+                            <MenuItem value='1'>
+                              Accepted
+                            </MenuItem>
+                            <MenuItem value='2'>
+                              Published
+                            </MenuItem>
+                          </TextField>
+                        </FormControl>
+                      </ItemGrid>
+                      <ItemGrid xs={12} sm={12} md>
+                        <CustomInput
+                          labelText="Detail"
+                          id="detail"
+                          name="detail"
+                          onChange={this.handleChange}
+                          inputProps={{
+                            value: detail,
+                          }}
+                          formControlProps={{
+                            fullWidth: true,
+                          }}
                         />
+                      </ItemGrid>
+                    </Grid>
+                    <Grid container>
+                      <ItemGrid xs={12} sm={12} md>
+                        <FormControl fullWidth>
+                          <ChipInput
+                            id="authors"
+                            name="authors"
+                            label="Authors"
+                            value={authors}
+                            onAdd={(chip) => this.onAdd(chip)}
+                            onDelete={(chips, index) => this.onDelete(chips, index)}
+                          />
+                        </FormControl>
                       </ItemGrid>
                       <ItemGrid xs={12} sm={12} md>
                         <CustomInput
@@ -209,7 +260,7 @@ class Edit extends Component {
                                 onClick={this.onSubmit}>Submit</Button>}
               />
             </div>
-          ) : <LinearProgress color="secondary" variant="indeterminate" />
+          ) : <LinearProgress color="secondary" variant="indeterminate"/>
         }
       </div>
     )
@@ -225,7 +276,7 @@ Edit.propTypes = {
   }),
 };
 
-const mapStateToProps = ({ app, role, paper }) => ({
+const mapStateToProps = ({app, role, paper}) => ({
   app,
   role,
   paper,

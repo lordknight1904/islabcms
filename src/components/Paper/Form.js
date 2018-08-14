@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import ChipInput from 'material-ui-chip-input';
 import { Document, Page } from 'react-pdf';
 import FileBase64 from 'react-file-base64';
+import {FormControl, MenuItem, TextField} from "@material-ui/core";
 
 class Form extends Component {
   state = {
@@ -23,6 +24,8 @@ class Form extends Component {
     submittedTo: '',
     pdfBase64: '',
     fileBase64: '',
+    published: '',
+    detail: '',
     pdfPath: '',
     filePath: '',
     _id: '',
@@ -45,13 +48,15 @@ class Form extends Component {
     }
   };
   onSubmit = () => {
-    const { name, type, authors, submittedTo, pdfBase64, fileBase64 } = this.state;
+    const { name, type, authors, submittedTo, pdfBase64, fileBase64, published, detail } = this.state;
     this.setState({ isSubmitting: true });
     const paper = {
       name,
       type,
       authors,
       submittedTo,
+      published,
+      detail,
       pdfBase64,
       fileBase64,
     };
@@ -64,6 +69,8 @@ class Form extends Component {
           type: '',
           authors: '',
           submittedTo: '',
+          published: '',
+          detail: '',
           pdfBase64: '',
           fileBase64: '',
           pdfPath: '',
@@ -85,7 +92,7 @@ class Form extends Component {
   };
   render() {
     const { classes } = this.props;
-    const { name, type, authors, submittedTo, pdfBase64, pageNumber, numPages } = this.state;
+    const { name, type, authors, submittedTo, pdfBase64, pageNumber, numPages, published, detail } = this.state;
     return (
       <div>
         <RegularCard
@@ -116,6 +123,44 @@ class Form extends Component {
                     onChange={this.handleChange}
                     inputProps={{
                       value: type,
+                    }}
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
+                </ItemGrid>
+              </Grid>
+              <Grid container>
+                <ItemGrid xs={12} sm={12} md>
+                  <FormControl fullWidth style={{ marginTop: '27px' }}>
+                    <TextField
+                      select
+                      label="Published status"
+                      id="published"
+                      name="published"
+                      value={published}
+                      onChange={this.handleChange}
+                    >
+                      <MenuItem value='0'>
+                        Submitted
+                      </MenuItem>
+                      <MenuItem value='1'>
+                        Accepted
+                      </MenuItem>
+                      <MenuItem value='2'>
+                        Published
+                      </MenuItem>
+                    </TextField>
+                  </FormControl>
+                </ItemGrid>
+                <ItemGrid xs={12} sm={12} md>
+                  <CustomInput
+                    labelText="Detail"
+                    id="detail"
+                    name="detail"
+                    onChange={this.handleChange}
+                    inputProps={{
+                      value: detail,
                     }}
                     formControlProps={{
                       fullWidth: true,

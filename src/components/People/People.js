@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
-import { withStyles } from 'material-ui';
-import { withRouter } from 'react-router'
+import {Link} from "react-router-dom";
+import {withStyles} from 'material-ui';
+import {withRouter} from 'react-router'
 import Grid from '@material-ui/core/Grid';
 import RegularCard from "../../components/Cards/RegularCard";
 import Table from "../../components/Table/Table";
 import ItemGrid from "../../components/Grid/ItemGrid";
 import CustomButton from '../CustomButtons/Button';
-import { bindActionCreators } from "redux";
+import {bindActionCreators} from "redux";
 import Button from '@material-ui/core/Button';
-import { Build, Delete } from "@material-ui/icons";
+import {Build, Delete} from "@material-ui/icons";
 import appStyle from '../../assets/jss/components/appStyle';
 import {
   personLoading,
@@ -32,7 +32,7 @@ class People extends Component {
     this.props.setCurrentPage(page);
   };
   handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+    this.setState({rowsPerPage: event.target.value});
   };
   handleFirstPageButtonClick = event => {
     this.handleChangePage(event, 0);
@@ -45,8 +45,8 @@ class People extends Component {
   };
   handleLastPageButtonClick = event => {
     this.handleChangePage(
-      event,
-      Math.max(0, Math.ceil(this.props.person.person.length / this.state.rowsPerPage) - 1),
+        event,
+        Math.max(0, Math.ceil(this.props.person.person.length / this.state.rowsPerPage) - 1),
     );
   };
 
@@ -86,20 +86,20 @@ class People extends Component {
   };
 
   render() {
-    const { classes, person } = this.props;
+    const {classes, person} = this.props;
     const editButton = props => (
-      <Link key="edit" to={`${this.props.location.pathname}/edit`} style={{ textDecoration: 'none' }}>
-        <Button key="edit" onClick={() => this.onEdit(props)} variant="fab" mini color="primary" aria-label="edit"
-                classes={{ mini: classes.buttonMini }}>
-          <Build />
-        </Button>
-      </Link>
+        <Link key="edit" to={`${this.props.location.pathname}/edit`} style={{textDecoration: 'none'}}>
+          <Button key="edit" onClick={() => this.onEdit(props)} variant="fab" mini color="primary" aria-label="edit"
+                  classes={{mini: classes.buttonMini}}>
+            <Build/>
+          </Button>
+        </Link>
     );
     const deleteButton = props => (
-      <Button key="delete" variant="fab" mini color="secondary" aria-label="delete"
-              classes={{ mini: classes.buttonMini }} onClick={() => this.onDeletePerson(props)}>
-        <Delete />
-      </Button>
+        <Button key="delete" variant="fab" mini color="secondary" aria-label="delete"
+                classes={{mini: classes.buttonMini}} onClick={() => this.onDeletePerson(props)}>
+          <Delete/>
+        </Button>
     );
     const data = person.person.map(pr => {
       return [
@@ -109,37 +109,37 @@ class People extends Component {
       ];
     });
     return (
-      <Grid container>
-        <ItemGrid xs={12} sm={12} md={12}>
-          <RegularCard
-            cardTitle="Person"
-            cardAction={
-              <Link to={`${this.props.location.pathname}/add`} style={{ textDecoration: 'none' }}>
-                <CustomButton color="rose">
-                  New
-                </CustomButton>
-              </Link>
-            }
-            // cardSubtitle="Here is a subtitle for this table"
-            content={
-              <Table
-                tableHeaderColor="primary"
-                tableHead={["Graduated", "Name", "Actions"]}
-                loading={person.loading}
-                tableData={data}
-                page={person.currentPage}
-                rowsPerPage={this.state.rowsPerPage}
-                handleChangePage={this.handleChangePage}
-                handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-                handleFirstPageButtonClick={this.handleFirstPageButtonClick}
-                handleBackButtonClick={this.handleBackButtonClick}
-                handleNextButtonClick={this.handleNextButtonClick}
-                handleLastPageButtonClick={this.handleLastPageButtonClick}
-              />
-            }
-          />
-        </ItemGrid>
-      </Grid>
+        <Grid container>
+          <ItemGrid xs={12} sm={12} md={12}>
+            <RegularCard
+                cardTitle="Person"
+                cardAction={
+                  <Link to={`${this.props.location.pathname}/add`} style={{textDecoration: 'none'}}>
+                    <CustomButton color="rose">
+                      New
+                    </CustomButton>
+                  </Link>
+                }
+                // cardSubtitle="Here is a subtitle for this table"
+                content={
+                  <Table
+                      tableHeaderColor="primary"
+                      tableHead={["Graduated", "Name", "Actions"]}
+                      loading={person.loading}
+                      tableData={data}
+                      page={person.currentPage}
+                      rowsPerPage={this.state.rowsPerPage}
+                      handleChangePage={this.handleChangePage}
+                      handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+                      handleFirstPageButtonClick={this.handleFirstPageButtonClick}
+                      handleBackButtonClick={this.handleBackButtonClick}
+                      handleNextButtonClick={this.handleNextButtonClick}
+                      handleLastPageButtonClick={this.handleLastPageButtonClick}
+                  />
+                }
+            />
+          </ItemGrid>
+        </Grid>
     )
   }
 }
@@ -156,21 +156,21 @@ People.propTypes = {
   fetchPerson: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ person }) => ({
+const mapStateToProps = ({person}) => ({
   person,
 });
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      setCurrentPage,
-      setEdit,
-      deactivePerson,
-      reactivePerson,
-      deletePerson,
-      addPerson,
-      fetchPerson,
-      personLoading,
-    },
-    dispatch,
-  );
+    bindActionCreators(
+        {
+          setCurrentPage,
+          setEdit,
+          deactivePerson,
+          reactivePerson,
+          deletePerson,
+          addPerson,
+          fetchPerson,
+          personLoading,
+        },
+        dispatch,
+    );
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(appStyle)(People)));

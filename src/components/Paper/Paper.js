@@ -38,10 +38,10 @@ class Paper extends Component {
     this.handleChangePage(event, 0);
   };
   handleBackButtonClick = event => {
-    this.handleChangePage(event, this.props.page - 1);
+    this.handleChangePage(event, this.props.paper.currentPage - 1);
   };
   handleNextButtonClick = event => {
-    this.handleChangePage(event, this.props.page + 1);
+    this.handleChangePage(event, this.props.paper.currentPage + 1);
   };
   handleLastPageButtonClick = event => {
     this.handleChangePage(

@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
     case ACTIONS.PAPER_SET_CURRENT_PAGE:
       return {
         ...state,
-        page: action.page,
+        currentPage: action.page,
       };
     default:
       return { ...state };
